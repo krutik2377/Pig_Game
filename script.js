@@ -20,9 +20,22 @@ const scores = [0,0];
 diceEL.classList.add('hidden');
 let currentScore =0;
 let activePlayer =0;
+let playing  = true;
+
+const switchPlayer = function()
+{
+        document.getElementById(`current--${activePlayer}`).textContent = 0;
+        currentScore =0;
+        activePlayer = activePlayer === 0 ? 1 : 0;
+        player0EL.classList.toggle('player--active');
+        player1EL.classList.toggle('player--active');
+}
 
 btnRoll.addEventListener('click', function() {
-    //1. Generating random dice.
+
+    if(playing)
+    {
+         //1. Generating random dice.
     const dice = Math.trunc(Math.random()*6) + 1;
     console.log(dice);
     //2. display dice.
@@ -38,12 +51,38 @@ btnRoll.addEventListener('click', function() {
     }
     else{
         // Switch to next player.
-        document.getElementById(`current--${activePlayer}`).textContent = 0;
-        currentScore =0;
-        activePlayer = activePlayer === 0 ? 1 : 0;
-        player0EL.classList.toggle('player--active');
-        player1EL.classList.toggle('player--active');
+        switchPlayer();
     }
+    }
+   
     
 });
 
+btnHold.addEventListener('click', function(){
+    if(playing)
+    {   
+             // 1. Add current score to active player's score
+    scores[activePlayer] += currentScore;
+    document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer];
+    
+
+    // 2. check if player's score is >100
+    if(scores[activePlayer] >= 20)
+    {
+        playing = false;
+        diceEL.classList.add('hidden');
+        // we are selecting query so we have to add . before ok.
+        document.querySelector(`.player--${activePlayer}`).classList.add('player--winner');
+        document.querySelector(`.player--${activePlayer}`).classList.remove('player--active');
+    }
+    else{
+        switchPlayer();
+    }
+    //finish the game
+
+    //switch to the next player.
+
+    }
+   
+    
+})
