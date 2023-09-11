@@ -14,13 +14,29 @@ const btnHold = document.querySelector('.btn--hold');
 
 score0EL.textContent = 0;
 score1EL.textContent = 0;
+let playing , activePlayer, currentScore, scores;
 
-const scores = [0,0];
-// hidden dice before game starts.
-diceEL.classList.add('hidden');
-let currentScore =0;
-let activePlayer =0;
-let playing  = true;
+
+const init = function()
+{
+    scores = [0,0];
+    currentScore = 0;
+    activePlayer = 0;
+    playing = true;
+
+    score0EL.textContent = 0;
+    score1EL.textContent = 0;
+    current0EL.textContent = 0;
+    current1EL.textContent =0;
+    player0EL.classList.remove('player--winner');
+    player1EL.classList.remove('player--winner');
+    player0EL.classList.add('player--active');
+    player1EL.classList.remove('player--active');
+    
+    diceEL.classList.add('hidden');
+}
+
+init();
 
 const switchPlayer = function()
 {
@@ -86,3 +102,5 @@ btnHold.addEventListener('click', function(){
    
     
 })
+
+btnNew.addEventListener('click', init);
